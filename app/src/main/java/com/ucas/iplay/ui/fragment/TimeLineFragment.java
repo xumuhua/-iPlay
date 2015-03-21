@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.ucas.iplay.R;
 import com.ucas.iplay.app.Config;
@@ -85,6 +86,12 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         mListView.setDataChangeListener(this);
         mListView.setAdapter(mEventCursorAdapter);
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+            }
+        });
         // 设置下拉刷新
         mSwipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(this);

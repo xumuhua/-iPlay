@@ -31,7 +31,6 @@ public class DetailsFragment extends BaseFragment {
     private View mDetailsView;
     private View mFragmentContainerView;
     private PosterAlbumFragment mPosterAlbumFragment;
-    private DetailsCallback mCallback;
     private EventsDataHelper mEventsDataHelper;
 
     public static final int POSTER_ON_CLICK = 0;
@@ -92,17 +91,16 @@ public class DetailsFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mActivity = activity;
-        try {
+        /*try {
             mCallback = (DetailsCallback)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException("The Activity must implement DetailsCallback!");
-        }
+        }*/
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallback = null;
         releaseFragmentStack();
     }
 
@@ -268,10 +266,10 @@ public class DetailsFragment extends BaseFragment {
     public EventModel getEvent() {
         return null;
     }
-
-    /*End Test*/
+/*
+    *//*End Test*//*
     public interface DetailsCallback{
 
-    }
+    }*/
 
 }

@@ -45,6 +45,11 @@ public class EventCursorAdapter extends CursorAdapter {
         viewHolder.titleTv.setText(cursor.getString(cursor.getColumnIndex(EventsDBInfo.TITLE)));
     }
 
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
     class ViewHolder {
         public TextView startAtTv;
         public TextView titleTv;
