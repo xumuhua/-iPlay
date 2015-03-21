@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--白色 -->
+    <color name="white">#FFFFFF</color>
+    <!--暗灰色 -->
+    <color name="dark_gray">#A9A9A9</color>
+    <!--亮灰色 -->
+    <color name="light_gray">#DCDCDC</color>
+
+</resources>
