@@ -9,6 +9,7 @@ import android.view.Menu;
 
 import com.ucas.iplay.R;
 import com.ucas.iplay.ui.base.BaseActivity;
+import com.ucas.iplay.ui.fragment.DetailsFragment;
 import com.ucas.iplay.ui.fragment.JointedFragment;
 import com.ucas.iplay.ui.fragment.NavigationDrawerFragment;
 import com.ucas.iplay.ui.fragment.NavigationDrawerFragment.NavigationDrawerCallback;
@@ -27,6 +28,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private TimeLineFragment mTimeLineFragment;
     private JointedFragment mJointedFragment;
+    private DetailsFragment mDetailsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +59,21 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
                 fragmentTransaction.replace(R.id.content_frame, mTimeLineFragment);
                 break;
             case JOINTED_FRAGMENT:
+/*
                 if (mJointedFragment == null) {
                     mJointedFragment = new JointedFragment();
                 }
                 mTitle = getString(R.string.drawer_item_jointed);
                 fragmentTransaction.replace(R.id.content_frame, mJointedFragment);
+*/
+                if (mDetailsFragment == null){
+                    mDetailsFragment = new DetailsFragment();
+                }
+                Bundle b = new Bundle();
+                b.putInt("EventID",3);
+                mDetailsFragment.setArguments(b);
+                mTitle = getString(R.string.drawer_item_jointed);
+                fragmentTransaction.replace(R.id.content_frame,mDetailsFragment);
                 break;
         }
         setTitle(mTitle);

@@ -124,7 +124,7 @@ public class HttpUtil {
      * @param eventId 活动id
      * @param responseHandler
      */
-    public static void getEventByEventId(Context context, int eventId, JsonHttpResponseHandler responseHandler) {
+    public static void getEventByEventId(Context context, int eventId, final JsonHttpResponseHandler responseHandler) {
         RequestParams params = new RequestParams();
         SharedPreferencesUtil sp = SharedPreferencesUtil.getSharedPreferencesUtil(context);
         params.put("sessionid", sp.get("sessionid"));
@@ -132,6 +132,7 @@ public class HttpUtil {
         new AsyncHttpClient().get(context, EVENT_DETAILS, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
                 super.onSuccess(statusCode, headers, response);
             }
 

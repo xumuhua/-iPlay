@@ -57,7 +57,7 @@ public class DetailsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /*  获取时间ID和用户ID */
-        mEventID = savedInstanceState.getInt("EventID",0);
+        mEventID = getArguments().getInt("EventID",0);
         mEventsDataHelper = new EventsDataHelper(context);
     }
 
@@ -187,6 +187,7 @@ public class DetailsFragment extends BaseFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 getModelFromJason(response);
+                getData();
                 List<EventModel> modles = new ArrayList<EventModel>();
                 modles.add(mEvent);
                 mEventsDataHelper.bulkInsert(modles);
