@@ -72,11 +72,11 @@ public class PosterAlbumFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mActivity = activity;
-        try {
+        /*try {
             mCallback = (PosterAlbumCallback) activity;
         } catch (ClassCastException e){
             throw new ClassCastException("Activity must implement PosterAlbumCallback");
-        }
+        }*/
     }
 
     public void setImageViews(ImageView [] imageViews){
