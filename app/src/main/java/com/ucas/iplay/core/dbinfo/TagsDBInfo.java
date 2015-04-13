@@ -13,5 +13,6 @@ public class TagsDBInfo extends BaseTagsDBInfo{
     public static final SQLiteTable TABLE = new SQLiteTable(Config.DATABASE.TAGS_TABLE_NAME)
            .addColumn(TAG_ID, DataType.INTEGER)
            .addColumn(TAG_NAME, DataType.TEXT)
+           .addColumn(TAG_DETAIL, DataType.TEXT)
            .addColumn(IS_INTERESTED, DataType.INTEGER);
 }

@@ -1,7 +1,7 @@
 package com.ucas.iplay.ui.fragment;
 
 import android.app.Activity;
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -9,9 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.ucas.iplay.ui.base.BaseFragment;
-import com.ucas.iplay.ui.adapter.PosterPagerAdapter;
 import com.ucas.iplay.R;
+import com.ucas.iplay.ui.adapter.PosterPagerAdapter;
+import com.ucas.iplay.ui.base.BaseFragment;
+
 /**
  * Created by Origa on 2015/3/1.
  */
@@ -72,11 +73,11 @@ public class PosterAlbumFragment extends BaseFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mActivity = activity;
-        /*try {
+        try {
             mCallback = (PosterAlbumCallback) activity;
         } catch (ClassCastException e){
             throw new ClassCastException("Activity must implement PosterAlbumCallback");
-        }*/
+        }
     }
 
     public void setImageViews(ImageView [] imageViews){

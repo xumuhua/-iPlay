@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.ucas.iplay.R;
 import com.ucas.iplay.core.dbinfo.EventsDBInfo;
+import com.ucas.iplay.core.model.EventModel;
+import com.ucas.iplay.ui.view.EventView;
 
 /**
  * Created by ivanchou on 1/23/2015.
@@ -27,33 +29,27 @@ public class EventCursorAdapter extends CursorAdapter {
     }
 
     @Override
+    public Object getItem(int position) {
+        getCursor().moveToPosition(position);
+        return EventModel.fromCursor(mContext, getCursor());
+    }
+
+    @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = mInflater.inflate(R.layout.event_lv_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder();
-        viewHolder.startAtTv = (TextView) view.findViewById(R.id.tv_start_at);
-        viewHolder.titleTv = (TextView) view.findViewById(R.id.tv_title);
-        viewHolder.avatarIv = (ImageView) view.findViewById(R.id.iv_avatar);
-        viewHolder.jointedIv = (ImageView) view.findViewById(R.id.iv_jointed);
-        view.setTag(viewHolder);
-        return view;
+        return new EventView(context);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        ViewHolder viewHolder = (ViewHolder) view.getTag();
-        viewHolder.startAtTv.setText(cursor.getString(cursor.getColumnIndex(EventsDBInfo.START_AT)));
-        viewHolder.titleTv.setText(cursor.getString(cursor.getColumnIndex(EventsDBInfo.TITLE)));
+        EventView eventView = (EventView) view;
+        EventModel eventModel = EventModel.fromCursor(context, cursor);
+        eventView.parse(eventModel);
+
     }
 
     @Override
-    public long getItemId(int position) {
-        return super.getItemId(position);
-    }
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-    class ViewHolder {
-        public TextView startAtTv;
-        public TextView titleTv;
-        public ImageView avatarIv;
-        public ImageView jointedIv;
+        return super.getView(position, convertView, parent);
     }
 }

@@ -71,7 +71,7 @@ public class EventModel {
         maxPeople = jsonObject.getLong("maxpeople");
 //        restriction = jsonObject.getInt("restriction");
 //        thumbnailPic = jsonObject.getString("thumbnailpic");
-        originalPic = jsonObject.getString("originalpic");
+//        originalPic = jsonObject.getString("originalpic");
     }
 
     public static EventModel fromCursor(Context context, Cursor cursor) {

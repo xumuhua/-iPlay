@@ -1,44 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/light_gray">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white">
+
+        <View
+            android:id="@+id/v_jointed"
+            android:layout_width="4dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_time_scope"
+            android:layout_alignTop="@+id/tv_time_scope"
+            android:background="#2df" />
 
         <TextView
-            android:id="@+id/tv_start_at"
+            android:id="@+id/tv_time_scope"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="2015-4-4"
+            android:textColor="#aaa"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_below="@+id/tv_start_at"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_time_scope"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text="周末去雁栖湖逛的有吗？"
+            android:textSize="18sp" />
 
-        <ImageView
-            android:id="@+id/iv_avatar"
-            android:layout_below="@+id/tv_title"
-            android:layout_alignParentLeft="true"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
-
-        <ImageView
-            android:id="@+id/iv_jointed"
-            android:layout_below="@+id/tv_title"
+        <TextView
+            android:id="@+id/tv_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_below="@id/tv_title"
+            android:layout_alignTop="@+id/iv_user_avatar"
+            android:background="@drawable/tv_tagname_bg"
+            android:padding="2dp"
+            android:text="闲逛"
+            android:textColor="#aaa"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/iv_user_avatar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/tv_title"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/user_avatar" />
 
     </RelativeLayout>
 </FrameLayout>

@@ -1,7 +1,7 @@
 package com.ucas.iplay.ui.fragment;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +61,6 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
         super.onCreate(savedInstanceState);
         /*  获取时间ID和用户ID */
         mEventID = getArguments().getInt(EVENT_ID,0);
-        mEventID = 3;
         mEventsDataHelper = new EventsDataHelper(context);
     }
 
@@ -268,11 +267,11 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         switch (viewID){
             case DetailsFragment.POSTER_ON_CLICK:
-                if (mPosterAlbumFragment == null){
+                /*if (mPosterAlbumFragment == null){
                     mPosterAlbumFragment = new PosterAlbumFragment();
                 }
                 mPosterAlbumFragment.setImageViews(mImageViews);
-                fragmentTransaction.add(R.id.content_frame,mPosterAlbumFragment).addToBackStack("DetailsFragment");
+                fragmentTransaction.add(R.id.content_frame,mPosterAlbumFragment).addToBackStack("DetailsFragment");*/
                 break;
             case DetailsFragment.MAP_ON_CLICK:
                 break;

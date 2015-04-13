@@ -7,6 +7,8 @@ import android.net.Uri;
 
 import com.ucas.iplay.app.Config;
 import com.ucas.iplay.core.DataProvider;
+import com.ucas.iplay.core.dbinfo.BaseEventsDBInfo;
+import com.ucas.iplay.core.dbinfo.BaseTagsDBInfo;
 import com.ucas.iplay.core.dbinfo.TagsDBInfo;
 import com.ucas.iplay.core.model.TagModel;
 
@@ -29,6 +31,8 @@ public class TagsDataHelper extends BaseDataHelper {
 
         values.put(TagsDBInfo.TAG_ID, tag.tagId);
         values.put(TagsDBInfo.TAG_NAME, tag.tagName);
+        values.put(TagsDBInfo.TAG_DETAIL, tag.tagDetail);
+        values.put(TagsDBInfo.IS_INTERESTED, tag.interested);
 
         return values;
     }
@@ -68,5 +72,30 @@ public class TagsDataHelper extends BaseDataHelper {
         }
         ContentValues[] valueArray = new ContentValues[contentValues.size()];
         return bulkInsert(contentValues.toArray(valueArray));
+    }
+
+    public int updateInterested(int tagId, int interested) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(BaseTagsDBInfo.IS_INTERESTED, interested);
+        String where = BaseTagsDBInfo.TAG_ID + "=?";
+        String[] whereArgs = {String.valueOf(tagId)};
+        return update(contentValues, where, whereArgs);
+    }
+
+    public long getInterestedTagsCode() {
+        TagModel[] tagModels= query();
+        int position;
+        long tags = 0;
+        for (TagModel tagModel : tagModels) {
+            position = tagModel.tagId;
+            if (tagModel.interested == 1) {
+                if (((1 << position) & tags) != 0) {
+                    tags &= ~(1 << position);
+                } else { // 选中状态
+                    tags |= (1 << position);
+                }
+            }
+        }
+        return tags;
     }
 }

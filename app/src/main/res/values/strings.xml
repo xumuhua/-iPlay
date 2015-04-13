@@ -8,11 +8,25 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_setting">SettingActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_create">PostNewActivity</string>
+    <string name="title_activity_list_tags">选择要关注的标签</string>
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
     <string name="drawer_item_timeline">主页</string>
     <string name="drawer_item_jointed">已关注</string>
+    <string name="drawer_item_postnew">创建</string>
+    <string name="drawer_item_changetags">选择TAG</string>
 
+    <string name="event_post">发布</string>
+    
+    <string name="login_et_account">请输入帐号</string>
+    <string name="login_et_password">请输入密码</string>
+    <string name="login_btn_login">登  录</string>
+    <string name="login_failure"> 帐号或密码错误，请重新输入</string>
+    <string name="title_activity_user">UserActivity</string>
+
+    <string name="viewpager_item_info">个人信息</string>
+    <string name="viewpager_item_post">发布的活动</string>
 </resources>

@@ -1,15 +1,11 @@
 package com.ucas.iplay.util;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ucas.iplay.app.Config;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
@@ -19,33 +15,9 @@ import org.json.JSONObject;
  */
 public class HttpUtil {
     private final String TAG = this.getClass().getSimpleName();
-    private Context mContext;
-    private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public HttpUtil(Context context) {
-        this.mContext = context;
-        client.setTimeout(10 * 1000);
-        client.setCookieStore(new PersistentCookieStore(mContext));
-        client.addHeader("user-agent", "ucasdemo");
+    private HttpUtil() {
     }
-
-    /** post数据交互 */
-    public void post(String url, RequestParams params,
-                     TextHttpResponseHandler responseHandler) {
-        client.post(url, params, responseHandler);
-    }
-
-    /** get数据交互 */
-    public void get(String url, RequestParams params,
-                    AsyncHttpResponseHandler responseHandler) {
-        client.get(url, params, responseHandler);
-    }
-    /** get数据交互 */
-    public void get(String url, RequestParams params,
-                    TextHttpResponseHandler responseHandler) {
-        client.get(url, params, responseHandler);
-    }
-
 
     /**
      * 注册
@@ -60,12 +32,13 @@ public class HttpUtil {
     public static void logIn(Context context, String name, String pwd, final JsonHttpResponseHandler responseHandler) {
         RequestParams params = new RequestParams();
         params.put("username", name);
-        params.put("password", StringUtil.parseStringToMD5(pwd));
-        new AsyncHttpClient().post(context, LOG_IN, params, new TextHttpResponseHandler() {
+//        params.put("password", StringUtil.parseStringToMD5(pwd));
+        params.put("password", pwd);
+        new AsyncHttpClient().post(context, LOG_IN, params, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                System.out.println(responseString);
-                responseHandler.onSuccess(statusCode, headers, responseString);
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
             }
 
             @Override
@@ -94,7 +67,33 @@ public class HttpUtil {
             }
         });
     }
+    /**
+     * 修改感兴趣（关注）标签
+     * @author hoolee
+     * @param context
+     * @param responseHandler
+     */
+    public static void changeInterestedTags(Context context, long interestedtags, final JsonHttpResponseHandler responseHandler){
+        RequestParams params = new RequestParams();
+        String sessionid = SPUtil.getSPUtil(context).get("sessionid");
+        System.out.println("in changeInterestedTags sessionid=" + sessionid);
+        params.put("sessionid", sessionid);
+        params.put("interestedtags", interestedtags);
+        new AsyncHttpClient().post(context, CHANGE_SELFINFO, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+                System.out.println("in changeInterestedTags onSuccess(), response=" + response);
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                System.out.println("in changeInterestedTags onFailure(), responseString=" + responseString);
+            }
+        });
+    }
     /**
      * 获取主时间线（不带参数的）
      * @param page
@@ -103,7 +102,7 @@ public class HttpUtil {
     public static void getLatestEvents(Context context, int page, final JsonHttpResponseHandler responseHandler) {
 
         RequestParams params = new RequestParams();
-        params.put("page", String.valueOf(page));
+        params.put("pagenumber", String.valueOf(page));
         new AsyncHttpClient().get(context, LATEST_EVENTS, params, new JsonHttpResponseHandler() {
 
             @Override
@@ -126,7 +125,7 @@ public class HttpUtil {
      */
     public static void getEventByEventId(Context context, int eventId, final JsonHttpResponseHandler responseHandler) {
         RequestParams params = new RequestParams();
-        SharedPreferencesUtil sp = SharedPreferencesUtil.getSharedPreferencesUtil(context);
+        SPUtil sp = SPUtil.getSPUtil(context);
         params.put("sessionid", sp.get("sessionid"));
         params.put("activityid", eventId);
         new AsyncHttpClient().get(context, EVENT_DETAILS, params, new JsonHttpResponseHandler() {
@@ -174,8 +173,22 @@ public class HttpUtil {
      * 获取个人信息
      * @param responseHandler
      */
-    public static void getSelfInfo(Context context, JsonHttpResponseHandler responseHandler) {
+    public static void getSelfInfo(Context context, final JsonHttpResponseHandler responseHandler) {
+        RequestParams params = new RequestParams();
+        SPUtil sp = SPUtil.getSPUtil(context);
+        params.put("sessionid", sp.get("sessionid"));
+        new AsyncHttpClient().post(context, USER_SELFINFO, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
     }
 
     /**
@@ -196,13 +209,25 @@ public class HttpUtil {
 
     /**
      * 获取用户发布活动纪录
-     * @param page
-     * @param pageSize
-     * @param beginId
+     * @param params
      * @param responseHandler
      */
-    public static void getEventByUserId(Context context, int page, int pageSize, int beginId, JsonHttpResponseHandler responseHandler) {
+    public static void getEventByUserId(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
+        SPUtil sp = SPUtil.getSPUtil(context);
+        params.put("sessionid", sp.get("sessionid"));
+        new AsyncHttpClient().post(context, USER_EVENTS, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure(statusCode, headers, responseString, throwable);
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
     }
 
     /**
@@ -222,6 +247,56 @@ public class HttpUtil {
      * @param responseHandler
      */
     public static void changeStateOfEvent(Context context, int eventId, JsonHttpResponseHandler responseHandler) {
+
+    }
+
+
+    /**
+     * 创建新活动
+     * @param context
+     * @param params
+     * @param responseHandler
+     */
+    public static void createNewEvent(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        client.post(context, CREATE_EVENT, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure(statusCode, headers, responseString, throwable);
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+    }
+
+    /**
+     * 上传照片
+     * @param context
+     * @param params
+     * @param responseHandler
+     */
+    public static void uploadPhoto(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("enctype", "multipart/form-data");
+        client.post(context, MODIFY_IMAGE, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure(statusCode, headers, responseString, throwable);
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
 
     }
 
@@ -251,6 +326,12 @@ public class HttpUtil {
     /** 创建活动 **/
     private static final String CREATE_EVENT = Config.URL.COMMON + "activities/create.html";
 
+    /** 上传活动图片 **/
+    private static final String UPLOAD_IMAGE = Config.URL.COMMON + "activities/uploadpic.html";
+
+    /** 修改活动图片 **/
+    private static final String MODIFY_IMAGE = Config.URL.COMMON + "activities/changepic.html";
+
     /** 活动参与者 **/
     private static final String JOINER = Config.URL.COMMON + "join/show.json";
 
@@ -268,6 +349,12 @@ public class HttpUtil {
 
     /** 修改补全个人信息 **/
     private static final String CHANGE_SELFINFO = Config.URL.COMMON + "authorize/changeselfinfo.html";
+
+    /** 上传用户头像 **/
+    private static final String UPLOAD_AVATAR = Config.URL.COMMON + "authorize/uploadphoto.html";
+
+    /** 修改用户头像 **/
+    private static final String MODIFY_AVATAR = Config.URL.COMMON + "authorize/changephoto.html";
 
     /** 修改活动信息 **/
     private static final String CHANGE_EVENTINFO = Config.URL.COMMON + "activities/changeinfo.json";

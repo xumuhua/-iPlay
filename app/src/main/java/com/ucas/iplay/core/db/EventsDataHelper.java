@@ -94,4 +94,18 @@ public class EventsDataHelper extends BaseDataHelper {
         ContentValues[] valueArray = new ContentValues[contentValues.size()];
         return bulkInsert(contentValues.toArray(valueArray));
     }
+
+    /**
+     * 更新 jointed
+     * @param eventId
+     * @param type type = 1 表示感兴趣；type ＝ 2 表示参加
+     * @return
+     */
+    public int updateJointed(int eventId, int type) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(BaseEventsDBInfo.JOINTED, type);
+        String where = BaseEventsDBInfo.EVENT_ID + "=?";
+        String[] whereArgs = {String.valueOf(eventId)};
+        return update(contentValues, where, whereArgs);
+    }
 }

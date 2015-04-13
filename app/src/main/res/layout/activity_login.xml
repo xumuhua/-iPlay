@@ -1,12 +1,70 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.ivanchou.ucasdemo.ui.LoginActivity">
+                xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context="com.ivanchou.ucasdemo.ui.LoginActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="42dp"
+            android:layout_marginRight="42dp"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/et_login_account"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#00ffffff"
+                android:hint="@string/login_et_account"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="15dp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@drawable/divider_horizontal_line" />
+            <EditText
+                android:id="@+id/et_login_password"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#00ffffff"
+                android:hint="@string/login_et_password"
+                android:inputType="textPassword"
+                android:paddingLeft="15dp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="42dp"
+            android:layout_marginRight="42dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/login_btn_login"
+            android:textSize="20sp"/>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="42dp"
+            android:layout_marginRight="42dp" >
+
+        <!--放置注册导入按钮-->
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
 
 </RelativeLayout>
+

@@ -1,8 +1,9 @@
 package com.ucas.iplay.ui.fragment;
 
 import android.annotation.TargetApi;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.Loader;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.ucas.iplay.R;
 import com.ucas.iplay.app.Config;
@@ -22,6 +24,7 @@ import com.ucas.iplay.core.model.EventModel;
 import com.ucas.iplay.core.model.TagModel;
 import com.ucas.iplay.core.tasker.AllTagsParseTask;
 import com.ucas.iplay.ui.adapter.EventCursorAdapter;
+import com.ucas.iplay.ui.view.EventView;
 import com.ucas.iplay.ui.view.FooterTagsView;
 import com.ucas.iplay.ui.view.FooterTagsView.OnTagClickListener;
 import com.ucas.iplay.ui.view.QuickReturnListView;
@@ -38,10 +41,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by ivanchou on 1/19/2015.
  */
-public class TimeLineFragment extends BaseFragment implements OnRefreshListener, DataChangeListener, OnTagClickListener, LoaderCallbacks<Cursor> {
+public class TimeLineFragment extends BaseFragment implements OnRefreshListener, OnItemClickListener, DataChangeListener, OnTagClickListener, LoaderCallbacks<Cursor> {
     private SwipeRefreshLayout mSwipeLayout;// 下拉刷新
     private QuickReturnListView mListView;
     private List<EventModel> mEventsList;
@@ -56,7 +60,6 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
     private boolean mLoadFromCache;
 
     private TagModel[] mTags;
-    private HttpUtil mHttpUtil;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,6 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         mEventsDataHelper = new EventsDataHelper(context);
         mTagsDataHelper = new TagsDataHelper(context);
         mEventCursorAdapter = new EventCursorAdapter(context);
-        mHttpUtil = new HttpUtil(getActivity());
     }
 
     @Override
@@ -74,6 +76,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         View view = inflater.inflate(R.layout.listview_timeline, container, false);
         mListView = (QuickReturnListView) view.findViewById(R.id.lv_maintimeline);
         footerTagsView = (FooterTagsView) view.findViewById(R.id.ftv_footer);
+        footerTagsView.setMode(FooterTagsView.TagMode.SINGLE);
 
         mTags = mTagsDataHelper.query();
         if (mTags != null || mTags.length != 0) {
@@ -85,13 +88,8 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         // 设置 listview 自动加载下一页
         mListView.setDataChangeListener(this);
         mListView.setAdapter(mEventCursorAdapter);
+        mListView.setOnItemClickListener(this);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-            }
-        });
         // 设置下拉刷新
         mSwipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(this);
@@ -128,7 +126,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.e(TAG, "----> " + response);
                 try {
-                    JSONArray array = response.getJSONArray("academies");
+                    JSONArray array = response.getJSONArray("tags");
                     new AllTagsParseTask(getActivity()) {
                         @Override
                         protected void onPostExecute(ArrayList<TagModel> tagModels) {
@@ -182,15 +180,17 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
                         mEventsDataHelper.empty();
                     }
                     mEventsDataHelper.bulkInsert(getModels(response.getJSONArray("activities")));
+                    mPage++;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+                mSwipeLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.e(TAG, "----> failure");
+                Log.e(TAG, "----> failure : network error");
+                mSwipeLayout.setRefreshing(false);
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
         });
@@ -204,7 +204,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
     public void onRefresh() {
         mPage = 1;
         getData();
-//        mSwipeLayout.setRefreshing(true);
+        mSwipeLayout.setRefreshing(true);
     }
 
     /**
@@ -215,6 +215,9 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         Log.e(TAG, "----on load more----");
 
         // 从网络加载更多的数据
+        if (!mLoadFromCache) {
+            getData();
+        }
 
     }
 
@@ -296,6 +299,23 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
             models.add(model);
         }
         return models;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        EventView eventView = (EventView) view;
+        long eventId = eventView.getEventId();
+
+        Log.e(TAG, "eventid : " + eventId);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
+        DetailsFragment detailsFragment = new DetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(DetailsFragment.EVENT_ID, (int)eventId);
+        detailsFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.content_frame, detailsFragment);
+        fragmentTransaction.commit();
     }
 
 //    /**

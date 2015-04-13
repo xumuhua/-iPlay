@@ -8,10 +8,10 @@ import android.os.Environment;
  */
 public class Config {
     public static final int PAGE_SIZE = 20;// 每页条数
-    public static final String PREFS_NAME = "ucasdemo";//SharedPreferences 名字
+    public static final String PREFS_NAME = "iplay";//SharedPreferences 名字
 
     public static final class URL {
-        public static final String SERVER = "http://ssh.freeshell.ustc.edu.cn:43175/iplay2.3/";
+        public static final String SERVER = "http://ssh.freeshell.ustc.edu.cn:43175/iplay2.3.2/";
         public static final String COMMON = SERVER + "api/";
         public static final String CAPTCHA = COMMON + "getCaptcha"; //验证码
         public static final String LOGIN = COMMON + "login";
@@ -31,7 +31,7 @@ public class Config {
      */
     public static final class DATABASE {
         public static final int VERSION = 1;// 版本
-        public static final String NAME = "ucasdemo.db"; // 数据库名
+        public static final String NAME = "iplay.db"; // 数据库名
         public static final String EVENTS_TABLE_NAME = "event";
         public static final String TAGS_TABLE_NAME = "tag";
         public static final String PATH = Environment

@@ -22,6 +22,8 @@ public class DrawerAdapter extends BaseAdapter{
         mTitles = new String[]{
                 context.getResources().getString(R.string.drawer_item_timeline),
                 context.getResources().getString(R.string.drawer_item_jointed),
+                context.getResources().getString(R.string.drawer_item_postnew),
+                context.getResources().getString(R.string.drawer_item_changetags),
         };
     }
 
@@ -44,6 +46,7 @@ public class DrawerAdapter extends BaseAdapter{
         switch (position){
             case 0:
             case 1:
+            case 2:
             default:
                 return 0;
         }

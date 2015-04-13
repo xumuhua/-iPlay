@@ -17,6 +17,7 @@ import java.util.List;
  * Created by ivanchou on 1/20/2015.
  */
 public class FooterTagsView extends ViewGroup {
+    public enum TagMode {SINGLE, MULTI}
 
     private Context mContext;
     private List<List<View>> mAllViews = new ArrayList<List<View>>();// 存储所有的 tag view
@@ -28,6 +29,8 @@ public class FooterTagsView extends ViewGroup {
     private static final int SINGLE_CLICK = 0;
     private static final int LONG_CLICK = 1;
     private OnTagClickListener mCallbacks;
+    private TagMode mMode;
+
 
     /**
      * 代码中 new 的时候调用
@@ -222,9 +225,14 @@ public class FooterTagsView extends ViewGroup {
         switch (state) {
             case SINGLE_CLICK:
                 // 生成 tags 字段，取消选中状态
-                if (((1 << position) & tags) != 0) {
-                    tags &= ~(1 << position);
-                } else { // 选中状态
+                if (mMode.equals(TagMode.MULTI)) {
+                    if (((1 << position) & tags) != 0) {
+                        tags &= ~(1 << position);
+                    } else { // 选中状态
+                        tags |= (1 << position);
+                    }
+                } else {
+                    tags = 0;
                     tags |= (1 << position);
                 }
                 break;
@@ -275,5 +283,9 @@ public class FooterTagsView extends ViewGroup {
          * @param tags
          */
         public void onTagLongClickRefresh(int tags);
+    }
+
+    public void setMode(TagMode mMode) {
+        this.mMode = mMode;
     }
 }

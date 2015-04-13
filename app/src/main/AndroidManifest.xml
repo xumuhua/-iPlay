@@ -33,6 +33,14 @@
             android:name=".ui.SettingActivity"
             android:label="@string/title_activity_setting" >
         </activity>
+        <activity
+            android:name=".ui.PostNewActivity"
+            android:label="@string/title_activity_create" >
+        </activity>
+        <activity
+            android:name=".ui.ListTagsAcitvity"
+            android:label="@string/title_activity_list_tags" >
+        </activity>
 
         <provider
             android:name=".core.DataProvider"
@@ -40,6 +48,12 @@
             android:enabled="true"
             android:exported="true" >
         </provider>
+
+        <activity
+            android:name=".ui.UserActivity"
+            android:label="@string/title_activity_user" >
+
+        </activity>
     </application>
 
 </manifest>
