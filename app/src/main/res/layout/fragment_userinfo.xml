@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/iv_user_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="5dp"
+            android:src="@drawable/user_avatar" />
+
+        <TextView
+            android:id="@+id/tv_sign"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="悟以往之不谏，知来者之可追"
+            android:layout_above="@+id/tv_username"
+            android:layout_toRightOf="@+id/iv_user_avatar"
+            android:layout_toEndOf="@+id/iv_user_avatar" />
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_below="@+id/iv_user_avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="ivanchou" />
+
+        <TextView
+            android:id="@+id/tv_sex"
+            android:layout_toRightOf="@+id/tv_username"
+            android:layout_alignBaseline="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="男" />
+
+        <TextView
+            android:id="@+id/tv_birthday"
+            android:layout_below="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="1992-02-14" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_school"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="中国科学院大学" />
+
+        <TextView
+            android:id="@+id/tv_academy"
+            android:layout_below="@+id/tv_school"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="计算机学院" />
+
+        <TextView
+            android:id="@+id/tv_major"
+            android:layout_below="@+id/tv_academy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="计算机科学与技术" />
+
+    </RelativeLayout>
+</LinearLayout>
